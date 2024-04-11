@@ -1,0 +1,69 @@
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+
+/ Home row mods macro
+#define HRML(k1,k2,k3,k4) &ht LSHFT k1  &ht LALT k2  &ht LCTRL k3  &ht LGUI k4
+#define HRMR(k1,k2,k3,k4) &ht RGUI k1  &ht RCTRL k2  &ht RALT k3  &ht RSHFT k4
+
+/ {
+    behaviors {
+        ht: hold_tap {
+            label = "hold_tap";
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <220>;
+            quick-tap-ms = <150>;
+            global-quick-tap;
+            bindings = <&kp>, <&kp>;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        tri_layer {
+            if-layers = <1 2>;
+            then-layer = <3>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            bindings = <
+            &kp Q   &kp W   &kp E    &kp R   &kp T   &kp Y   &kp U   &kp I   &kp O   &kp P
+            HRML(A,   S,   D,    F)  &kp G  &kp H   HRMR(J,   K,   L,   SQT)
+            &kp Z    &kp X  &kp C    &kp V   &kp B  &kp N   &kp M   &kp COMMA   &kp DOT  &kp FSLH
+                    &kp ESC  &lt1 TAB   &kp ENTER   &kp SPACE   &lt2 BSPC   &kp DEL 
+            >;
+        };
+
+        left_layer {
+            &trans  &trans  &kp UARW    &trans  &trans  &kp LBKT    &kp N7  &kp N8   &kp N9  &kp N0
+            &trans  &kp LARW &kp DARW &kp RARW &trans &kp RBKT &kp N4 &kp N5 &kp N6 &kp MINUS
+            &trans &trans &trans &trans &trans &kp BSLH &kp N1 &kp N2 &kp N3 &kp EQUAL
+                    &KP GRAVE &trans &trans &trans &kp INS
+            >;
+        };
+
+        right_layer {
+            bindings = <
+            &kp F1 &kp F2 &kp F3 &kp F4 &trans &trans &trans &trans &trans &trans
+            &kp F5     &kp F6     &kp F7    &kp F8  &trans &kp LARW  &kp DARW   &kp UARW    &kp RARW &kp SEMI
+            &kp F9  &kp F10 &kp F11 &kp F12 &trans &trans &trans &trans &trans &kp COLON
+            &kp GRAVE &trans &trans &trans &trans &kp INS
+            >;
+        };
+
+        tri_layer {
+            bindings = <
+            &sys_reset  &trans   &trans  &trans  &bt BT_CLR    &BT_CLR     &trans     &trans     &trans      &sys_reset
+            &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4
+            &bootloader &trans  &trans  &trans  &bt BT_CLR &bt BT_CLR   &trans  &trans  &trans  &bootloader
+                        &trans &trans &trans &trans &trans &trans
+            >;
+        };
+    };
+};
